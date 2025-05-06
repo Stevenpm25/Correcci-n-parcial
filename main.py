@@ -1,4 +1,5 @@
 from typing import Optional
+<<<<<<< HEAD
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 from datetime import datetime
@@ -32,6 +33,12 @@ class DBTarea(Base):
     usuario_id = Column(Integer)
 
 Base.metadata.create_all(bind=engine)
+=======
+
+from fastapi import *
+from pydantic import BaseModel
+from operaciones import *
+>>>>>>> 4172b056816e01a3be5a7a860e955c0d3a2b2566
 
 app = FastAPI()
 
@@ -42,6 +49,7 @@ class Usuario(BaseModel):
     premium: bool = False
     estado: bool = False
 
+<<<<<<< HEAD
 class Tarea(BaseModel):
     id: int
     nombre: str
@@ -171,19 +179,40 @@ def listar_usuarios_premium_activos():
 
 @app.get("/usuarios/{usuario_id}")
 def obtener_usuario_por_id_route(usuario_id: int):
+=======
+@app.post("/Crear usuarios/")
+def crear_usuario(usuario: Usuario):
+    # Agregar el usuario al archivo CSV
+    agregar_usuario(usuario.dict())
+    return {"mensaje": "Usuario agregado correctamente"}
+
+@app.get("/Obtener todos los usuarios/")
+def listar_usuarios():
+    # Listar todos los usuarios
+    return obtener_usuario()
+
+@app.get("/Obtener usuario por id/{usuario_id}")
+def obtener_usuario(usuario_id: int):
+>>>>>>> 4172b056816e01a3be5a7a860e955c0d3a2b2566
     usuario = obtener_usuario_por_id(usuario_id)
     if usuario:
         return usuario
     raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
 @app.patch("/usuarios/{usuario_id}/estado")
+<<<<<<< HEAD
 def actualizar_estado_usuario_route(usuario_id: int, estado: bool):
+=======
+def actualizar_estado_usuario(usuario_id: int, estado: bool):
+    # Actualizar el estado del usuario
+>>>>>>> 4172b056816e01a3be5a7a860e955c0d3a2b2566
     exito = actualizar_usuario_estado(usuario_id, estado)
     if exito:
         return {"mensaje": f"El usuario ha sido {'activado' if estado else 'desactivado'} correctamente."}
     raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
 @app.patch("/usuarios/{usuario_id}/premium")
+<<<<<<< HEAD
 def actualizar_premium_usuario_route(usuario_id: int, premium: bool):
     exito = actualizar_usuario_premium(usuario_id, premium)
     if exito:
@@ -244,3 +273,17 @@ def editar_tarea(
     db.commit()
     db.close()
     return {"mensaje": "Tarea actualizada correctamente"}
+=======
+def hacer_usuario_premium(usuario_id: int, premium: bool):
+    # Actualizar el estado premium del usuario
+    exito = actualizar_usuario_premium(usuario_id, premium)
+    if exito:
+        return {"mensaje": f"Usuario {'promovido a premium' if premium else 'retirado de premium'} correctamente"}
+    raise HTTPException(status_code=404, detail="Usuario no encontrado")
+@app.get("/usuarios/activos")
+def listar_usuarios_activos():
+    return obtener_usuarios_activos()
+@app.get("/usuarios/premium-activos")
+def listar_usuarios_premium_activos():
+    return obtener_usuarios_premium_activos()
+>>>>>>> 4172b056816e01a3be5a7a860e955c0d3a2b2566
