@@ -1,0 +1,4 @@
+id,nombre,email,estado,premium
+1,Luis,steven@gamil.com,False,True
+2,lolo,lolocorreo,True,True
+3,Lucho,luchogmail,False,False
